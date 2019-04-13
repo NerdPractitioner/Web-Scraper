@@ -8,7 +8,7 @@ Django web-scraper using Beautiful Soup and Selenium packages to pull launch sch
 
 ## Introduction
 I was involved in a two week team sprint at The Tech Academy. I worked with a group of peers where I experienced what it was like to join a project already in progress and add something of my own. We used Python with the Django framework and the following package dependencies: beautifulsoup4, certifi, chardet, idna, numpy, pytz, requests, selenium, soupsieve, urllib3. I gained an understanding of the scrum framework of the agile methodolodology. This project let me dig my fingers into a live, moving machine and build a piece from scratch without the hand rails. I can't share the whole project but i have included samples from my portion.
-]
+
 *Jump to: [Space App](#space-app), [Integrations](#integrations), [Other Skills](#other-skills-learned), [Page Top](#contents)*
 
 ## Space App
@@ -97,11 +97,13 @@ In the following code snippets, I created a model to grab content from the NASA 
 ## Integrations
 
 Adding this list element to our navbar template, gave access to my page from the anywhere on the site.
-                <li class="nav-item pr-3">
-                  <a class="btn btn-danger" href="{% url 'space_page' %}">Space Launches</a>
-                </li>
+
+        <li class="nav-item pr-3">
+          <a class="btn btn-danger" href="{% url 'space_page' %}">Space Launches</a>
+        </li>
 I also utilized the urls section of our main app to include the paths in my app
-                path('spaceapp', include('SpaceApp.urls')),#path to SpaceApp
+
+        path('spaceapp', include('SpaceApp.urls')),#path to SpaceApp
         
 My portion of the project was focused on functionality but I did stick with the style of the overall content using bootstrap for my buttons and display. 
 *Jump to: [Introduction](#introduction), [Space App](#space-app), [Other Skills](#other-skills-learned), [Page Top](#contents)*
