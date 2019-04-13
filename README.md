@@ -19,77 +19,77 @@ In the following code snippets, I created a model to grab content from the NASA 
 ### From models.py
  
 
-from django.db import models
-from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse
-from bs4 import BeautifulSoup as soup
-from selenium import webdriver
+        from django.db import models
+        from django.shortcuts import render, get_object_or_404, redirect
+        from django.http import HttpResponse
+        from bs4 import BeautifulSoup as soup
+        from selenium import webdriver
 
 
-#Create your models here.
+        #Create your models here.
 
-class LaunchEvent:
-    def __init__(self):
-        #use selenium to open a browser
-        driver = webdriver.Chrome()
-        my_url = 'https://www.nasa.gov/launchschedule'
+        class LaunchEvent:
+            def __init__(self):
+                #use selenium to open a browser
+                driver = webdriver.Chrome()
+                my_url = 'https://www.nasa.gov/launchschedule'
         
-        #selenium browser waits 10 seconds allowing JS content to load then grabs page contents
-        driver.implicitly_wait(10) # seconds
-        driver.get(my_url)
+                #selenium browser waits 10 seconds allowing JS content to load then grabs page contents
+                driver.implicitly_wait(10) # seconds
+                driver.get(my_url)
 
-        #selenium driver creates page_html which can be turned to soup
-        page_html = driver.page_source
-        driver.quit()
+                #selenium driver creates page_html which can be turned to soup
+                page_html = driver.page_source
+                driver.quit()
 
-        #html parsing
-        page_soup = soup(page_html, "html.parser")
+                #html parsing
+                page_soup = soup(page_html, "html.parser")
 
-        #grabs each launch 
-        containers = page_soup.find_all("div", class_="launch-info")
-        title_list = []# list to iterate in below for loop.
-        date_list = []
-        info_list = []
+                #grabs each launch 
+                containers = page_soup.find_all("div", class_="launch-info")
+                title_list = []# list to iterate in below for loop.
+                date_list = []
+                info_list = []
 
-        for i in range(0, 3):
-            title_list.append(containers[i].find(class_="title").get_text())
-            date_list.append(containers[i].find(class_="date").get_text())
-            info_list.append(containers[i].find(class_="description").get_text())
+                for i in range(0, 3):
+                    title_list.append(containers[i].find(class_="title").get_text())
+                    date_list.append(containers[i].find(class_="date").get_text())
+                    info_list.append(containers[i].find(class_="description").get_text())
 
-        #group iterations through zip function
-        all_list = zip(title_list, date_list, info_list)
-        self.all_list = all_list
+                #group iterations through zip function
+                all_list = zip(title_list, date_list, info_list)
+                self.all_list = all_list
         
 ### From Views.py
-from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpRequest, HttpResponse
-from .models import LaunchEvent
+        from django.shortcuts import render, get_object_or_404, redirect
+        from django.http import HttpRequest, HttpResponse
+        from .models import LaunchEvent
 
 
-#Create your views here.
-def space_page(request):
-    launches = LaunchEvent()
-    return render(request, 'SpaceApp/space_page.html', {'launches': launches})
+        #Create your views here.
+        def space_page(request):
+            launches = LaunchEvent()
+            return render(request, 'SpaceApp/space_page.html', {'launches': launches})
     
 ### From page template    
-{% extends 'base.html' %} <!-- here we are saying that we will be rendering our content inside of the base.html template -->
+        {% extends 'base.html' %} <!-- here we are saying that we will be rendering our content inside of the base.html template -->
 
-{% block title %}| Launch Events{% endblock %} <!-- This will appear in the browser tab -->
+        {% block title %}| Launch Events{% endblock %} <!-- This will appear in the browser tab -->
 
-{% block content %} <!-- block content defines where the content will be rendered on the page according to where we placed the same tags in the body of base.html-->
-<h1>Launches from NASA and SpaceX</h1>
+        {% block content %} <!-- block content defines where the content will be rendered on the page according to where we placed the same tags in the body of base.html-->
+        <h1>Launches from NASA and SpaceX</h1>
          
-{% for item in launches.all_list %}
-        <div>
-            <h3 style="background-color: cadetblue"  > {{ item.0 }} </h3><br> <!-- launch title -->
-            <p> {{ item.1 }}    </p><br>                                       <!-- launch date -->
-            <p>{{ item.2 }} </p>  <!-- launch purpose -->
+        {% for item in launches.all_list %}
+                <div>
+                    <h3 style="background-color: cadetblue"  > {{ item.0 }} </h3><br> <!-- launch title -->
+                    <p> {{ item.1 }}    </p><br>                                       <!-- launch date -->
+                    <p>{{ item.2 }} </p>  <!-- launch purpose -->
                 
-        </div>
-        <br>
-    {% endfor %}
+                </div>
+                <br>
+            {% endfor %}
 
-{% endblock %}   
+        {% endblock %}   
 
         
 *Jump to: [Introduction](#introduction), [Integrations](#integrations), [Other Skills](#other-skills-learned), [Page Top](#contents)*
@@ -97,11 +97,11 @@ def space_page(request):
 ## Integrations
 
 Adding this list element to our navbar template, gave access to my page from the anywhere on the site.
-        <li class="nav-item pr-3">
-          <a class="btn btn-danger" href="{% url 'space_page' %}">Space Launches</a>
-        </li>
+                <li class="nav-item pr-3">
+                  <a class="btn btn-danger" href="{% url 'space_page' %}">Space Launches</a>
+                </li>
 I also utilized the urls section of our main app to include the paths in my app
-        path('spaceapp', include('SpaceApp.urls')),#path to SpaceApp
+                path('spaceapp', include('SpaceApp.urls')),#path to SpaceApp
         
 My portion of the project was focused on functionality but I did stick with the style of the overall content using bootstrap for my buttons and display. 
 *Jump to: [Introduction](#introduction), [Space App](#space-app), [Other Skills](#other-skills-learned), [Page Top](#contents)*
